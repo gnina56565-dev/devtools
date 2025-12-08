@@ -13,3 +13,15 @@
 | sprintNumber          |
 | plannedHoursPerWeek     | 
 | readyForSprint()   | 
+
+
+## Правило веток: feature/DVT-X
+
+Все фичи и задачи реализуются в отдельных ветках по шаблону:
+
+- `feature/DVT-1`
+- `feature/DVT-2`
+- `feature/DVT-3`
+
+Основная ветка:
+- `master` (или `main`) — содержит стабильную версию проекта.
