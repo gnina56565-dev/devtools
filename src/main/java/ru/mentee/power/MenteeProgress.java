@@ -11,6 +11,6 @@ public record MenteeProgress(
     }
 
     public String summary() {
-        return "Sprint " + sprintNumber + ": " + menteeName + " (planned " + plannedHoursPerWeek + " h)";
+        return "Sprint " + sprintNumber + " → " + menteeName + ": planned " + plannedHoursPerWeek + " h";
     }
 }
