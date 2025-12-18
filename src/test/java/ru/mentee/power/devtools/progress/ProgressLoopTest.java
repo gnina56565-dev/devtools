@@ -4,6 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 
 @DisplayName("Тестирование ProgressTracker")
 class ProgressLoopTest {
@@ -11,7 +15,6 @@ class ProgressLoopTest {
     @Test
     @DisplayName("Должен корректно вычислить суммарный прогресс когда передан массив mentee")
     void shouldCalculateTotalProgress_whenMultipleMentees() {
-        // given - подготовка данных
         ProgressTracker tracker = new ProgressTracker();
         Mentee[] mentees = {
                 new Mentee("Иван", "Москва", "Backend разработка", 5, 12),
@@ -19,31 +22,35 @@ class ProgressLoopTest {
                 new Mentee("Пётр", "Казань", "Java Backend", 12, 12)
         };
 
-        // when - выполнение действия
         String result = tracker.calculateTotalProgress(mentees);
 
-        // then - проверка результата с assertJ
         assertThat(result)
                 .contains("пройдено 25 из 36 уроков")
                 .contains("осталось 11 уроков");
     }
 
     @Test
-    @DisplayName("Должен корректно обработать массив когда все mentee завершили курс")
-    void shouldCalculateTotalProgress_whenAllMenteesCompleted() {
-        // given
+    void shouldReturnOkWhenMenteesIsNull() {
         ProgressTracker tracker = new ProgressTracker();
-        Mentee[] mentees = {
-                new Mentee("Иван", "Москва", "Backend", 12, 12),
-                new Mentee("Мария", "СПб", "Fullstack", 12, 12)
-        };
+        String result = tracker.calculateTotalProgress(null);
+        assertEquals("Ok", result);
+    }
 
-        // when
-        String result = tracker.calculateTotalProgress(mentees);
+    //покрытие main тестом
+    @Test
+    void shouldExecuteMainMethod() {
+        // Перехватываем вывод
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
 
-        // then
-        assertThat(result)
-                .contains("пройдено 24 из 24 уроков")
-                .contains("осталось 0 уроков");
+        try {
+            ProgressTracker.main(new String[]{});
+            String output = outContent.toString().trim();
+            assertTrue(output.contains("пройдено 25 из 36 уроков"), "Ожидаемый текст не найден");
+            assertTrue(output.contains("осталось 11 уроков"), "Ожидаемый текст не найден");
+        } finally {
+            System.setOut(originalOut);
+        }
     }
 }

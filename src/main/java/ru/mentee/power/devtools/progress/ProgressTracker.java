@@ -4,7 +4,7 @@ public class ProgressTracker {
 
     public String calculateTotalProgress(Mentee[] mentees) {
         if (mentees == null) {
-            return "Ок";
+            return "Ok";
         }
         int totalCompleted = 0;
         int totalTotal = 0;
