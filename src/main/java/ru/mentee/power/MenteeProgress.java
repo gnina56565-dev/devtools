@@ -1,4 +1,4 @@
-package ru.mentee.power.devtools;
+package ru.mentee.power;
 
 public record MenteeProgress(
         String menteeName,
@@ -11,7 +11,6 @@ public record MenteeProgress(
     }
 
     public String summary() {
-        return "Sprint " + sprintNumber + " → " + menteeName + ": planned "
-                + plannedHoursPerWeek + " h";
+        return "Sprint " + sprintNumber + ": " + menteeName + " (planned " + plannedHoursPerWeek + " h)";
     }
 }
