@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'checkstyle'
+    id 'jacoco'
+}
+
+group = 'ru.mentee.power'
+version = '1.0-SNAPSHOT'
+
+ext {
+    junitVersion = '5.10.0'
+    assertjVersion = '3.25.3'
+}
+
+// ИЗМЕНИТЕ НА Java 21
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'ru.mentee.power.devtools.student.StudentList'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+checkstyle {
+    toolVersion = '10.12.5'
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    ignoreFailures = true  // временно отключаем проверку тестов
+}
+
+// Конфигурация для игнорирования ошибок checkstyle в тестах
+tasks.withType(Checkstyle) {
+    exclude '**/test/**'  // исключаем тесты из проверки
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.11"  // возвращаем стабильную версию
+    reportsDirectory = layout.buildDirectory.dir('reports/jacoco')
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.80
+            }
+        }
+    }
+}
+
+// Задача для быстрого тестирования
+tasks.register('quickTest') {
+    dependsOn clean, test
+    description = 'Быстрый запуск тестов'
+}
+
+// Задача для открытия отчёта
+tasks.register('openCoverage') {
+    dependsOn jacocoTestReport
+    doLast {
+        def reportFile = file("${buildDir}/reports/jacoco/test/html/index.html")
+        if (reportFile.exists()) {
+            println "Отчёт покрытия: ${reportFile.absolutePath}"
+            // Открываем в браузере
+            exec {
+                commandLine 'cmd', '/c', "start chrome ${reportFile.absolutePath}"
+            }
+        }
+    }
+}
