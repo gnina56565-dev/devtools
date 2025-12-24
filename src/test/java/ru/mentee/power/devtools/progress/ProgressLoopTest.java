@@ -15,7 +15,7 @@ class ProgressLoopTest {
     @Test
     @DisplayName("Должен корректно вычислить суммарный прогресс когда передан массив mentee")
     void shouldCalculateTotalProgress_whenMultipleMentees() {
-        ProgressTracker tracker = new ProgressTracker();
+        //ProgressTracker tracker = new ProgressTracker();
         Mentee[] mentees = {
                 new Mentee("Иван", "Москва", "Backend разработка", 5, 12),
                 new Mentee("Мария", "Санкт-Петербург", "Fullstack", 8, 12),
