@@ -11,7 +11,6 @@ import java.io.PrintStream;
 
 @DisplayName("Тестирование ProgressTracker")
 class ProgressLoopTest {
-    //TODO тестирование ProgressTracker
     @Test
     @DisplayName("Должен корректно вычислить суммарный прогресс когда передан массив mentee")
     void shouldCalculateTotalProgress_whenMultipleMentees() {
