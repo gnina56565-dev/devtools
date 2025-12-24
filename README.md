@@ -1,3 +1,4 @@
+![CI](https://github.com/gnina56565-dev/devtools/actions/workflows/ci.yml/badge.svg)
 ### Quick Start
 #### Запустить run: Gradle --> Tasks --> application --> run
 #### Запустить build: Gradle --> Tasks --> build --> build
